@@ -203,6 +203,8 @@ class App:
             self.history[meta["chunk"]] = m
             self.last_measurement, self.last_meta = m, meta
             self.solve_and_send()
+            # The chunk count changed, so the page needs a new status.
+            self.send_status()
 
     def solve_and_send(self):
         # Solve and send under one hold of the lock, so results go out in
@@ -410,14 +412,24 @@ class Handler(BaseHTTPRequestHandler):
         return self._json({"ok": True, "status": APP.status_dict()})
 
 
+class Server(ThreadingHTTPServer):
+    daemon_threads = True
+
+    def handle_error(self, request, client_address):
+        # A reload or closed tab drops the connection mid-reply. That's
+        # normal, so don't print a traceback for it.
+        if isinstance(sys.exc_info()[1], (BrokenPipeError, ConnectionResetError)):
+            return
+        super().handle_error(request, client_address)
+
+
 def main():
     global APP
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--port", type=int, default=8765)
     args = ap.parse_args()
     APP = App()
-    srv = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    srv.daemon_threads = True
+    srv = Server(("127.0.0.1", args.port), Handler)
     print(f"TowerFix map on http://127.0.0.1:{args.port}/  (Ctrl+C to stop)")
     try:
         srv.serve_forever()
