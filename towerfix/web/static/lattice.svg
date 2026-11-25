@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lattice">
+  <rect x="2" y="2" width="60" height="60" rx="9" fill="#ffffff" stroke="#0b1450" stroke-width="4"/>
+  <g fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M17 9 Q31 32 17 55" stroke="#c8302a"/>
+    <path d="M33 9 Q47 32 33 55" stroke="#c8302a"/>
+    <path d="M9 29 Q32 17 55 29" stroke="#1f7a3a"/>
+    <path d="M9 45 Q32 33 55 45" stroke="#1f7a3a"/>
+  </g>
+  <circle cx="39.1" cy="23.6" r="7" fill="#0b1450" stroke="#ffffff" stroke-width="3"/>
+</svg>

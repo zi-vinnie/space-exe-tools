@@ -1,9 +1,16 @@
-// TowerFix map page. Talks to server.py: GET /api/state, SSE /api/events,
-// POST /api/... for controls. The true position click is kept in this page
-// and only used to score fixes. It is never sent to the server.
+// Lattice, the TowerFix map page. Talks to server.py: GET /api/state, SSE
+// /api/events, POST /api/... for controls. The true position click is kept
+// in this page and only used to score fixes. It is never sent to the server.
+//
+// Like a Decca chart, the reference tower (St Thomas) is the master, in navy,
+// and every other tower is a lane with its own colour and letter. The letter
+// is shown wherever the colour is, so colour is never the only signal.
 
-const COLORS = ["#2f6fdf", "#d1495b", "#2a9d8f", "#e9a03b", "#8e5bd6", "#4c956c", "#c2559b", "#5c6b73"];
+const INK = "#0b1450";
+const LANE_COLORS = ["#c8302a", "#1f7a3a", "#6b2e8f", "#1d5fa8", "#0f7c7c", "#a3306b", "#7a5230", "#5a6270"];
+const TRUTH = "#d46b00";
 const towerColor = {};
+const towerLane = {};   // tii -> "M" for the master, else "A", "B", ...
 const $ = (id) => document.getElementById(id);
 
 const map = L.map("map", { zoomControl: true }).setView([50.70, -3.40], 10);
@@ -18,6 +25,7 @@ L.control.scale({ imperial: false }).addTo(map);
 
 const layers = {
   hyper: L.layerGroup().addTo(map),
+  lanes: L.layerGroup().addTo(map),
   fix: L.layerGroup().addTo(map),
   track: L.layerGroup().addTo(map),
   truth: L.layerGroup().addTo(map),
@@ -52,13 +60,34 @@ function metres(a, b) {
 
 // ---- Towers -----------------------------------------------------------------
 
+// Offsets are measured against St Thomas, so it is the master. If it is
+// missing from towers.json, the first tower is.
 function drawTowers() {
-  towers.forEach((t, i) => {
-    towerColor[t.tii] = COLORS[i % COLORS.length];
-    L.circleMarker([t.lat, t.lon], { radius: 7, color: "#fff", weight: 2, fillColor: towerColor[t.tii], fillOpacity: 1 })
-      .bindTooltip(`${t.name} (${t.tii})`, { permanent: true, direction: "right", className: "tower-label", offset: [8, 0] })
+  const master = towers.find((t) => t.name === "St Thomas") || towers[0];
+  let n = 0;
+  for (const t of towers) {
+    if (t === master) {
+      towerColor[t.tii] = INK;
+      towerLane[t.tii] = "M";
+    } else {
+      towerColor[t.tii] = LANE_COLORS[n % LANE_COLORS.length];
+      towerLane[t.tii] = String.fromCharCode(65 + n);
+      n++;
+    }
+    L.circleMarker([t.lat, t.lon], { radius: 7, color: "#fff", weight: 2.5, fillColor: towerColor[t.tii], fillOpacity: 1 })
+      .bindTooltip(`${towerLane[t.tii]} · ${esc(t.name)}`, {
+        permanent: true, direction: "right", className: "tower-label", offset: [10, 0],
+      })
+      .on("tooltipopen", (e) => e.tooltip.getElement()?.style.setProperty("--c", towerColor[t.tii]))
       .addTo(map);
-  });
+  }
+}
+
+function laneChip(tii) {
+  const lane = towerLane[tii] || "?";
+  const cls = lane === "M" ? "lane master" : "lane";
+  const title = lane === "M" ? "Master: every lane is timed against it" : `Lane ${lane}`;
+  return `<span class="${cls}" style="--c:${towerColor[tii] || INK}" title="${title}">${lane}</span>`;
 }
 
 function towerTable(res) {
@@ -71,13 +100,15 @@ function towerTable(res) {
     const tr = document.createElement("tr");
     const ref = r.is_reference ? " (ref)" : "";
     const why = r.used ? "" : (r.why || "");
+    const off = r.excluded ?? excluded.has(r.tii);
+    tr.className = off ? "off" : "";
     tr.innerHTML = `
-      <td><span class="swatch" style="background:${towerColor[r.tii]}"></span></td>
-      <td>${esc(r.name)}${ref}<span class="why">${esc(r.tii)}${why ? " · " + esc(why) : ""}</span></td>
+      <td>${laneChip(r.tii)}</td>
+      <td><span class="name">${esc(r.name)}</span>${ref}<span class="why">${esc(r.tii)}${why ? " · " + esc(why) : ""}</span></td>
       <td class="num">${r.score_db !== undefined && r.score_db !== null ? fmt(r.score_db, 1) + " dB" : ""}</td>
       <td class="num">${r.heard ? fmt(r.delay_us, 3) + " µs" : ""}</td>
       <td class="num">${r.residual_ns !== undefined ? fmt(r.residual_ns, 0) + " ns" : ""}</td>
-      <td><input type="checkbox" ${(r.excluded ?? excluded.has(r.tii)) ? "" : "checked"} data-tii="${esc(r.tii)}"></td>`;
+      <td class="use"><input type="checkbox" ${off ? "" : "checked"} data-tii="${esc(r.tii)}" aria-label="Use ${esc(r.name)}"></td>`;
     body.appendChild(tr);
   }
   body.querySelectorAll("input[type=checkbox]").forEach((cb) => {
@@ -91,21 +122,77 @@ function towerTable(res) {
 
 // ---- Results ----------------------------------------------------------------
 
+// Where to put a hyperbola's lane tag: about 110 px along it from the fix
+// on screen, so it sits near the crossing without covering it at any zoom.
+// The tags move on zoom. With no fix, the middle of the line.
+const TAG_PX = 110;
+function lanePoint(points, fix) {
+  if (!fix) return points[Math.floor(points.length / 2)];
+  const px = (p) => map.latLngToLayerPoint(p);
+  const at = px([fix.lat, fix.lon]);
+  let best = 0, bestD = Infinity;
+  points.forEach((p, i) => { const d = px(p).distanceTo(at); if (d < bestD) { bestD = d; best = i; } });
+  const step = best < points.length / 2 ? 1 : -1;
+  for (let i = best; i >= 0 && i < points.length; i += step) {
+    if (px(points[i]).distanceTo(at) > TAG_PX) return points[i];
+  }
+  return points[step > 0 ? points.length - 1 : 0];
+}
+
+function drawLaneTags() {
+  layers.lanes.clearLayers();
+  if (!lastResult) return;
+  for (const h of lastResult.hyperbolas) {
+    if (!h.points.length) continue;
+    L.marker(lanePoint(h.points, lastResult.fix), {
+      interactive: false, keyboard: false,
+      icon: L.divIcon({
+        className: "", iconSize: null,
+        html: `<div class="lane-tag${h.excluded ? " off" : ""}" style="--c:${towerColor[h.tii]}">${towerLane[h.tii] || "?"}</div>`,
+      }),
+    }).addTo(layers.lanes);
+  }
+}
+map.on("zoomend", drawLaneTags);
+
+// Chi-squared 95% point for k degrees of freedom (Wilson-Hilferty). Above
+// it, the spare towers disagree with the fix more than timing noise explains.
+function chi2Limit(k) {
+  const a = 2 / (9 * k);
+  return k * (1 - a + 1.6449 * Math.sqrt(a)) ** 3;
+}
+
+const ICON = {
+  ok: '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>',
+  warn: '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5l6 11H1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M7 5.5v3.2M7 10.2v.6" stroke="currentColor" stroke-width="1.8"/></svg>',
+};
+
+function verdict(f, res) {
+  if (res.ambiguous) return ["warn", "Two crossings fit"];
+  if (f.dof === 0) return ["warn", "Unchecked: only 3 towers"];
+  if (f.chi2 > chi2Limit(f.dof)) return ["bad", "Towers disagree"];
+  return ["ok", `Checked by ${f.dof} spare ${f.dof === 1 ? "tower" : "towers"}`];
+}
+
 function showResult(res) {
   lastResult = res;
   layers.hyper.clearLayers();
   layers.fix.clearLayers();
+  const f = res.fix;
   for (const h of res.hyperbolas) {
     if (!h.points.length) continue;
+    const c = towerColor[h.tii];
+    const name = (towers.find((t) => t.tii === h.tii) || {}).name || h.tii;
     L.polyline(h.points, {
-      color: towerColor[h.tii], weight: 2, opacity: h.excluded ? 0.5 : 0.9, dashArray: h.excluded ? "6 6" : null,
-    }).bindTooltip(`${h.tii} minus ${h.ref}${h.excluded ? " (excluded)" : ""}`).addTo(layers.hyper);
+      color: c, weight: h.excluded ? 2 : 3, opacity: h.excluded ? 0.6 : 0.95, dashArray: h.excluded ? "6 6" : null,
+    }).bindTooltip(`Lane ${towerLane[h.tii]}: ${esc(name)} against ${esc(h.ref)}${h.excluded ? " (not used)" : ""}`)
+      .addTo(layers.hyper);
   }
+  drawLaneTags();
   const m = res.meta || {};
   const where = m.source === "live" ? `live chunk ${m.chunk}` : `${esc(m.source)} chunk ${m.chunk + 1} of ${m.count} (t = ${m.t_s} s)`;
-  let html = `<div class="small">${where}, ${m.frames} frames, ${fmt(m.frequency_offset_hz, 1)} Hz offset` +
+  let html = `<div class="where">${where}, ${m.frames} frames, ${fmt(m.frequency_offset_hz, 1)} Hz offset` +
     (m.timing_jumps ? `, <span class="warn">${m.timing_jumps} timing jumps</span>` : "") + `</div>`;
-  const f = res.fix;
   // One track point per chunk. A new result for a chunk (a re-solve after
   // a tower toggle, or going back to it) replaces its old point, and a
   // result with no fix removes it.
@@ -117,22 +204,26 @@ function showResult(res) {
   });
   if (f) {
     for (const a of res.alternates) {
-      L.polygon(a.ellipse95, { color: "#888", weight: 1, fillOpacity: 0.05, dashArray: "4 4" }).addTo(layers.fix);
-      L.circleMarker([a.lat, a.lon], { radius: 5, color: "#888", weight: 2, fillOpacity: 0 })
+      L.polygon(a.ellipse95, { color: "#3d4677", weight: 1.5, fillOpacity: 0.04, dashArray: "4 4" }).addTo(layers.fix);
+      L.circleMarker([a.lat, a.lon], { radius: 6, color: "#3d4677", weight: 2, fillOpacity: 0, dashArray: "3 3" })
         .bindTooltip("Other crossing: fits the same").addTo(layers.fix);
     }
-    L.polygon(f.ellipse95, { color: "#111", weight: 1.5, fillColor: "#111", fillOpacity: 0.12 })
+    L.polygon(f.ellipse95, { color: INK, weight: 1.5, fillColor: INK, fillOpacity: 0.1 })
       .bindTooltip("95% ellipse from timing noise only").addTo(layers.fix);
-    L.circleMarker([f.lat, f.lon], { radius: 6, color: "#fff", weight: 2, fillColor: "#111", fillOpacity: 1 }).addTo(layers.fix);
-    const dot = L.circleMarker([f.lat, f.lon], { radius: 2, color: "#111", weight: 0, fillOpacity: 0.5 }).addTo(layers.track);
+    // Chart fix symbol: a navy ring with a dot, white halo so it reads on any lane.
+    L.circleMarker([f.lat, f.lon], { radius: 8, color: INK, weight: 3, fillColor: "#fff", fillOpacity: 1 })
+      .bindTooltip("Fix").addTo(layers.fix);
+    const dot = L.circleMarker([f.lat, f.lon], { radius: 2.5, color: INK, weight: 0, fillOpacity: 0.55 }).addTo(layers.track);
     track.push({ lat: f.lat, lon: f.lon, key, dot });
+    const [kind, words] = verdict(f, res);
     html += `<div class="big">${f.lat.toFixed(6)}, ${f.lon.toFixed(6)}</div>
-      <div class="small">1 sd ${fmt(f.sd_major_m, 1)} × ${fmt(f.sd_minor_m, 1)} m (timing noise only) ·
+      <div class="verdict ${kind}">${ICON[kind === "ok" ? "ok" : "warn"]}${words}</div>
+      <div class="small muted" style="margin-top:8px">1 sd ${fmt(f.sd_major_m, 1)} × ${fmt(f.sd_minor_m, 1)} m (timing noise only) ·
       χ² ${fmt(f.chi2, 2)} with ${f.dof} spare ${f.dof === 1 ? "tower" : "towers"}</div>`;
     if (f.dof === 0) html += `<div class="small warn">Only 3 towers, so nothing checks this fix.</div>`;
     if (res.ambiguous) html += `<div class="small warn">Two crossings fit. Chose the one ${res.chosen_by}.</div>`;
   } else {
-    html += `<div>No fix: ${esc(res.why || "unknown")}</div>`;
+    html += `<div class="verdict bad">${ICON.warn}No fix</div><div style="margin-top:8px">No fix: ${esc(res.why || "unknown")}</div>`;
   }
   $("fix").innerHTML = html;
   towerTable(res);
@@ -225,8 +316,8 @@ map.on("click", async (e) => {
   if (clickMode === "truth") {
     truth = { lat, lon: lng };
     layers.truth.clearLayers();
-    L.circleMarker([lat, lng], { radius: 3, color: "#1a7f37", weight: 0, fillColor: "#1a7f37", fillOpacity: 1 }).addTo(layers.truth);
-    L.circleMarker([lat, lng], { radius: 9, color: "#1a7f37", weight: 3, fillOpacity: 0 }).bindTooltip("True position (scoring only)").addTo(layers.truth);
+    L.circleMarker([lat, lng], { radius: 3, color: TRUTH, weight: 0, fillColor: TRUTH, fillOpacity: 1 }).addTo(layers.truth);
+    L.circleMarker([lat, lng], { radius: 10, color: TRUTH, weight: 3, fillOpacity: 0, dashArray: "4 3" }).bindTooltip("True position (scoring only)").addTo(layers.truth);
     scoreTrack();
   } else if (clickMode === "calibrate") {
     const n = status.chunks_in_run || 0;

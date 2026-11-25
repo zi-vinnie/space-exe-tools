@@ -1,8 +1,15 @@
-# TowerFix map
+<img src="static/lattice.svg" width="56" height="56" alt="Lattice logo">
 
-A map page that positions the RTL-SDR antenna from BBC National DAB
-(block 12B) timing, without GPS. It replays `.cu8` recordings or reads
-the dongle live, and makes one fix every chunk (5 s by default).
+# Lattice
+
+Lattice is the TowerFix map. It positions the RTL-SDR antenna from BBC
+National DAB (block 12B) timing, without GPS. It replays `.cu8` recordings
+or reads the dongle live, and makes one fix every chunk (5 s by default).
+
+It is drawn like a Decca navigation chart. St Thomas is the master tower
+(navy, "M"), and every other tower is a lane with its own colour and
+letter. The fix is the navy ring where the lanes cross. The visual rules
+are in `../../DESIGN.md`.
 
 ## Run it
 
@@ -20,7 +27,8 @@ Map tiles come from a local cache in `tiles/` (git ignores it). To fill
 the cache on a new computer, run `uv run fetch_tiles.py` once. It fetches
 879 OpenStreetMap tiles: zoom 0 to 13 over all the towers, and 14 to 16
 for about 3 km round Exeter centre, with a pause between requests. Leaflet
-1.9.4 is in `static/vendor/`, so the page works offline.
+1.9.4 and the Archivo fonts are in `static/vendor/`, so the page works
+offline.
 
 ## Using the page
 

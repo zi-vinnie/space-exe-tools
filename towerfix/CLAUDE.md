@@ -15,10 +15,11 @@ plan" (Meeting Notes).
   it). `fix.py` turns arrival times into a position and does calibration.
   `stream.py` reads a recording or a live dongle in chunks. Code the
   drone test and Crayon 2 will reuse goes here.
-- `web/` is the browser map tool: a local server (`server.py`) that
+- `web/` is Lattice, the browser map tool: a local server (`server.py`) that
   replays recordings or reads the dongle live, and a Leaflet page with
   cached OpenStreetMap tiles. `web/offsets.json` holds each tower's
-  network offset against St Thomas. See `web/README.md`.
+  network offset against St Thomas. See `web/README.md`. Its look is in
+  `../DESIGN.md`; use the impeccable skill for UI changes.
 - `recordings/` holds raw recordings. Git ignores it, because a
   10-minute recording is about 2.5 GB. Name files
   `YYYY-MM-DD_HHMM_site.cu8` and keep a note of the site's GPS position

@@ -33,7 +33,8 @@ TOWERS_JSON = ROOT / "towers.json"
 OFFSETS_JSON = HERE / "offsets.json"
 PLAY_PAUSE_S = 0.4      # gap between chunks when playing a recording
 TYPES = {".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
-         ".css": "text/css; charset=utf-8", ".png": "image/png", ".json": "application/json"}
+         ".css": "text/css; charset=utf-8", ".png": "image/png", ".json": "application/json",
+         ".svg": "image/svg+xml", ".woff2": "font/woff2"}
 
 
 class App:
