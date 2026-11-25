@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-25T14:07:46+00:00",
+  "title": "Design System: Lattice",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "tonalRamp": [
+          "#4c4c4c",
+          "#7f7f7f",
+          "#b2b2b2",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff",
+          "#ffffff"
+        ]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "Sheet",
+        "tonalRamp": [
+          "#49494a",
+          "#7a7a7b",
+          "#aaabac",
+          "#f4f5f7",
+          "#f7f8f9",
+          "#fafafb",
+          "#fcfcfd",
+          "#fdfefe"
+        ]
+      },
+      "ink": {
+        "role": "primary",
+        "displayName": "Chart Ink",
+        "tonalRamp": [
+          "#030618",
+          "#050a28",
+          "#070e38",
+          "#0b1450",
+          "#545a84",
+          "#9195b0",
+          "#c2c4d3",
+          "#e6e7ed"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "tonalRamp": [
+          "#121523",
+          "#1e233b",
+          "#2a3153",
+          "#3d4677",
+          "#777d9f",
+          "#a7abc1",
+          "#ced0dd",
+          "#ebecf1"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "tonalRamp": [
+          "#3c3d42",
+          "#64676e",
+          "#8c909a",
+          "#c9cedc",
+          "#d9dce6",
+          "#e6e8ef",
+          "#f1f2f6",
+          "#f9fafb"
+        ]
+      },
+      "lane-a": {
+        "role": "data",
+        "displayName": "Lane A red",
+        "tonalRamp": [
+          "#3c0e0c",
+          "#641815",
+          "#8c211d",
+          "#c8302a",
+          "#d86e69",
+          "#e6a19f",
+          "#f1cbc9",
+          "#f9eae9"
+        ]
+      },
+      "lane-b": {
+        "role": "data",
+        "displayName": "Lane B green",
+        "tonalRamp": [
+          "#092411",
+          "#0f3d1d",
+          "#155528",
+          "#1f7a3a",
+          "#62a175",
+          "#9ac3a6",
+          "#c7ddcd",
+          "#e8f1eb"
+        ]
+      },
+      "lane-c": {
+        "role": "data",
+        "displayName": "Lane C purple",
+        "tonalRamp": [
+          "#200d2a",
+          "#351747",
+          "#4a2064",
+          "#6b2e8f",
+          "#976cb0",
+          "#bca0cc",
+          "#dacae3",
+          "#f0eaf3"
+        ]
+      },
+      "lane-d": {
+        "role": "data",
+        "displayName": "Lane D blue",
+        "tonalRamp": [
+          "#081c32",
+          "#0e2f54",
+          "#144275",
+          "#1d5fa8",
+          "#608fc2",
+          "#99b7d7",
+          "#c6d7e9",
+          "#e8eff6"
+        ]
+      },
+      "lane-e": {
+        "role": "data",
+        "displayName": "Lane E teal",
+        "tonalRamp": [
+          "#042525",
+          "#073e3e",
+          "#0a5656",
+          "#0f7c7c",
+          "#57a3a3",
+          "#93c4c4",
+          "#c3dede",
+          "#e7f1f1"
+        ]
+      },
+      "lane-f": {
+        "role": "data",
+        "displayName": "Lane F magenta",
+        "tonalRamp": [
+          "#300e20",
+          "#511835",
+          "#72214a",
+          "#a3306b",
+          "#be6e97",
+          "#d5a1bc",
+          "#e8cbda",
+          "#f5eaf0"
+        ]
+      },
+      "lane-g": {
+        "role": "data",
+        "displayName": "Lane G brown",
+        "tonalRamp": [
+          "#24180e",
+          "#3d2918",
+          "#553921",
+          "#7a5230",
+          "#a1856e",
+          "#c3b1a1",
+          "#ddd3cb",
+          "#f1edea"
+        ]
+      },
+      "lane-h": {
+        "role": "data",
+        "displayName": "Lane H slate",
+        "tonalRamp": [
+          "#1b1d21",
+          "#2d3138",
+          "#3e444e",
+          "#5a6270",
+          "#8b919a",
+          "#b4b8be",
+          "#d5d7db",
+          "#eeeff0"
+        ]
+      },
+      "truth": {
+        "role": "state",
+        "displayName": "Truth",
+        "tonalRamp": [
+          "#3f2000",
+          "#6a3500",
+          "#944a00",
+          "#d46b00",
+          "#e0974c",
+          "#ebbc8c",
+          "#f4dabf",
+          "#faf0e5"
+        ]
+      },
+      "ok": {
+        "role": "state",
+        "displayName": "OK",
+        "tonalRamp": [
+          "#092411",
+          "#0f3d1d",
+          "#155528",
+          "#1f7a3a",
+          "#62a175",
+          "#9ac3a6",
+          "#c7ddcd",
+          "#e8f1eb"
+        ]
+      },
+      "warn": {
+        "role": "state",
+        "displayName": "Warn",
+        "tonalRamp": [
+          "#291600",
+          "#452500",
+          "#603400",
+          "#8a4b00",
+          "#ad814c",
+          "#caae8c",
+          "#e1d2bf",
+          "#f3ede5"
+        ]
+      },
+      "bad": {
+        "role": "state",
+        "displayName": "Bad",
+        "tonalRamp": [
+          "#350b09",
+          "#59130f",
+          "#7d1a15",
+          "#b3261e",
+          "#c96761",
+          "#dc9d99",
+          "#ecc8c6",
+          "#f7e9e8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Title",
+        "purpose": "The LATTICE name in the panel header."
+      },
+      "readout": {
+        "displayName": "Readout",
+        "purpose": "The fix position, the largest text in the panel."
+      },
+      "heading": {
+        "displayName": "Heading",
+        "purpose": "Section names."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Buttons, tabs, inputs and table numbers."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Status and explanations."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Fix details and help text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "neat-line",
+        "value": "0 0 0 4px #ffffff, 0 0 0 6px #0b1450",
+        "purpose": "The double rule round the map. Spread only, no blur."
+      }
+    ],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Default square control with a navy rule.",
+      "html": "<button class=\"ds-btn\">Back</button>",
+      "css": ".ds-btn{font:500 15px/1.2 'Archivo Narrow','Arial Narrow',sans-serif;color:#0b1450;background:#fff;border:1.5px solid #0b1450;border-radius:2px;padding:8px 14px;min-height:38px;cursor:pointer}.ds-btn:hover{background:#f4f5f7}.ds-btn:focus-visible{outline:3px solid #0b1450;outline-offset:2px}"
+    },
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Open or Start: one per source mode.",
+      "html": "<button class=\"ds-btn-primary\">Open</button>",
+      "css": ".ds-btn-primary{font:500 15px/1.2 'Archivo Narrow','Arial Narrow',sans-serif;color:#fff;background:#0b1450;border:1.5px solid #0b1450;border-radius:2px;padding:8px 14px;min-height:38px;cursor:pointer}.ds-btn-primary:hover{background:#1a2566}.ds-btn-primary:focus-visible{outline:3px solid #0b1450;outline-offset:2px}"
+    },
+    {
+      "name": "Segmented tabs",
+      "kind": "nav",
+      "refersTo": "tab-on",
+      "description": "Replay or Live; map click mode.",
+      "html": "<div class=\"ds-seg\"><button class=\"ds-tab ds-on\">Replay</button><button class=\"ds-tab\">Live</button></div>",
+      "css": ".ds-seg{display:flex;border:1.5px solid #0b1450;border-radius:2px;width:300px}.ds-tab{flex:1;font:500 15px/1.2 'Archivo Narrow',sans-serif;color:#0b1450;background:#fff;border:0;border-right:1.5px solid #0b1450;padding:8px;min-height:38px;cursor:pointer}.ds-tab:last-child{border-right:0}.ds-tab:hover{background:#f4f5f7}.ds-on,.ds-on:hover{background:#0b1450;color:#fff}"
+    },
+    {
+      "name": "Calibrate here",
+      "kind": "button",
+      "refersTo": "tab-danger",
+      "description": "Writes offsets.json, so it stands apart in red.",
+      "html": "<button class=\"ds-danger\">Calibrate here</button>",
+      "css": ".ds-danger{font:500 15px/1.2 'Archivo Narrow',sans-serif;color:#b3261e;background:#fff;border:1.5px solid #b3261e;border-radius:2px;padding:8px 14px;min-height:38px;cursor:pointer}.ds-danger:hover{background:#fbeceb}.ds-danger:focus-visible{outline:3px solid #0b1450;outline-offset:2px}"
+    },
+    {
+      "name": "Lane chip",
+      "kind": "chip",
+      "refersTo": "lane-chip",
+      "description": "Lane letter on the lane colour; master is outlined M.",
+      "html": "<span class=\"ds-lane\" style=\"background:#c8302a\">A</span> <span class=\"ds-lane ds-master\">M</span>",
+      "css": ".ds-lane{display:inline-grid;place-items:center;min-width:26px;height:22px;padding:0 4px;font:700 13px/1 'Archivo Narrow',sans-serif;color:#fff}.ds-master{background:#fff;color:#0b1450;border:1.5px solid #0b1450}"
+    },
+    {
+      "name": "Fix verdict",
+      "kind": "custom",
+      "description": "How far to trust the fix, in words, icon and colour.",
+      "html": "<div class=\"ds-verdict\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\"><path d=\"M2 7.5l3 3 7-7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\"/></svg>Checked by 1 spare tower</div>",
+      "css": ".ds-verdict{display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border:1.5px solid currentColor;color:#1f7a3a;font:700 13px/1.2 'Archivo Narrow',sans-serif;letter-spacing:.06em;text-transform:uppercase}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The lattice chart",
+    "overview": "Lattice is drawn like a Decca Navigator chart. Those charts overprinted families of coloured hyperbolas, called lanes, on the sea, and a navigator found their position where the lanes crossed. TowerFix works the same way with BBC DAB towers, so the app shows its working in the same form. St Thomas is the master station in navy. Every other tower is a lane with its own colour and letter, and the fix is the navy ring where the lanes cross.\n\nThe app is used at a desk and outdoors in daylight, so it is light only. Navy ink on white paper is the highest-contrast pair the world offers. The world shows up in four places only: chart lettering, lane colours, the double-ruled neat line round the map, and lane tags on the hyperbolas. Controls are ordinary web controls drawn square, with navy rules.",
+    "keyCharacteristics": [
+      "White chart paper, navy ink, and one colour plus one letter per tower lane.",
+      "Condensed chart lettering for headings, labels and every number.",
+      "A double-ruled neat line frames the map like a printed chart.",
+      "Square corners and navy rules. No shadows."
+    ],
+    "rules": [
+      {
+        "name": "The Letter Rule",
+        "body": "A lane colour never appears without its letter: on the tower label, the lane tag on the map and the chip in the table. Colour is never the only signal.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink Rule",
+        "body": "Anything that isn't a tower is navy, white or a state colour. Lane colours are never used for decoration.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "**Do** give every new tower view its lane colour and letter together.",
+      "**Do** keep numbers in Archivo Narrow with tabular figures.",
+      "**Do** keep destructive or file-writing actions apart from the rest and in red.",
+      "**Do** let a bad fix look bad: the verdict changes colour, icon and words."
+    ],
+    "donts": [
+      "**Don't** add a dark mode for the field. The scene is daylight, and navy on white is the contrast the world has.",
+      "**Don't** use lane colours for decoration, headers or buttons.",
+      "**Don't** add drop shadows, rounded cards or gradients. The chart is flat print.",
+      "**Don't** put the University of Exeter crest or the Space EXE roundel in the app. Credit them in text."
+    ]
+  }
+}
