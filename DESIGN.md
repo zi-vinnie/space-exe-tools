@@ -143,7 +143,7 @@ Lanes are given in towers.json order, skipping the master: A red #c8302a, B gree
 
 ## Typography
 
-**Chart lettering:** Archivo Narrow, weights 500 and 700, self-hosted in `static/vendor/fonts/`.
+**Chart lettering:** Archivo Narrow, weights 500 and 700, self-hosted in `towerfix/web/static/vendor/fonts/`.
 **Body:** Archivo, weight 400.
 
 Every number on the page uses tabular figures, so columns line up and values don't jump as they update.
