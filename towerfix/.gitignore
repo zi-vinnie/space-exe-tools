@@ -1,0 +1,6 @@
+recordings/*
+!recordings/.gitkeep
+__pycache__/
+web/tiles/
+web/.venv/
+web/offsets.prev.json

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TowerFix map</title>
+<link rel="stylesheet" href="/static/vendor/leaflet.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="map"></div>
+<aside id="panel">
+  <header>
+    <h1>TowerFix</h1>
+    <span id="conn" class="pill">connecting</span>
+  </header>
+
+  <section>
+    <h2>Source</h2>
+    <div class="tabs">
+      <button id="tab-replay" class="tab on">Replay</button>
+      <button id="tab-live" class="tab">Live</button>
+    </div>
+    <div id="src-replay">
+      <label>Recording <select id="file"></select></label>
+      <label>Chunk length <input id="seconds" type="number" min="1" max="60" step="1" value="5"> s</label>
+      <div class="row">
+        <button id="open">Open</button>
+        <button id="prev" title="Previous chunk">Back</button>
+        <button id="play">Play</button>
+        <button id="next" title="Next chunk">Next</button>
+      </div>
+      <input id="seek" type="range" min="0" max="0" value="0" disabled>
+    </div>
+    <div id="src-live" hidden>
+      <label>Gain <input id="gain" type="number" min="0" max="50" step="0.1" value="20"> dB</label>
+      <label>Chunk length <input id="live-seconds" type="number" min="1" max="60" step="1" value="5"> s</label>
+      <div class="row">
+        <button id="live-start">Start</button>
+        <button id="live-stop">Stop</button>
+      </div>
+    </div>
+    <p id="status" class="muted">idle</p>
+  </section>
+
+  <section>
+    <h2>Fix</h2>
+    <div id="fix" class="muted">No fix yet.</div>
+    <div id="track" class="muted"></div>
+    <div class="row"><button id="clear-track">Clear track</button></div>
+  </section>
+
+  <section>
+    <h2>Towers</h2>
+    <table id="towers">
+      <thead><tr><th></th><th>Tower</th><th title="TII lit minus dark blocks">TII</th>
+        <th title="Arrival after the strongest signal">Arrival</th><th title="Fix residual">Resid.</th><th>Use</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p id="other-tii" class="muted small"></p>
+  </section>
+
+  <section>
+    <h2>Map click</h2>
+    <div class="tabs" id="click-mode">
+      <button data-mode="none" class="tab on">Nothing</button>
+      <button data-mode="truth" class="tab">True position</button>
+      <button data-mode="calibrate" class="tab">Calibrate here</button>
+    </div>
+    <p id="click-help" class="muted small">Clicks on the map do nothing.</p>
+    <div id="truth" class="muted small"></div>
+    <div id="offsets" class="muted small"></div>
+  </section>
+</aside>
+<script src="/static/vendor/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

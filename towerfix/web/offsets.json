@@ -1,0 +1,32 @@
+{
+  "_about": "Fixed network delay of each tower compared with St Thomas (0E09), in microseconds: measured TDOA minus geometric TDOA at a known site.",
+  "reference": "0E09",
+  "site": "Physics Building, University of Exeter, 7th floor (phone GPS)",
+  "lat": 50.736875,
+  "lon": -3.536434,
+  "source": "2026-11-25_1138_desk.cu8",
+  "created": "2026-11-25T12:30:45+00:00",
+  "towers": {
+    "0E0B": {
+      "offset_us": -67.1382,
+      "measured_us": 28.736,
+      "geometric_us": 95.8742,
+      "spread_us": 0.0087,
+      "chunks": 5
+    },
+    "0E0C": {
+      "offset_us": 19.3409,
+      "measured_us": 73.936,
+      "geometric_us": 54.5951,
+      "spread_us": 0.0091,
+      "chunks": 5
+    },
+    "0E07": {
+      "offset_us": -41.8532,
+      "measured_us": 58.1266,
+      "geometric_us": 99.9798,
+      "spread_us": 0.0149,
+      "chunks": 5
+    }
+  }
+}

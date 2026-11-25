@@ -1,0 +1,12 @@
+{
+  "_source": "radiodns.uk transmitter pages (Ofcom data, last updated 2004 to 2014), fetched 2026-11-25. TII sub IDs from the BDXC Ensemble_List (bdxc.org.uk/ukdab.pdf). All on BBC National DAB, CE15, block 12B, TII main ID 0x0E.",
+  "towers": [
+    {"name": "St Thomas", "tii": "0E09", "lat": 50.719129, "lon": -3.562148, "site_height_m": 102, "power_kw": 13.44},
+    {"name": "Stockland Hill", "tii": "0E0B", "lat": 50.807095, "lon": -3.104951, "site_height_m": 227, "power_kw": 13.00},
+    {"name": "Holcombe Down", "tii": "0E0C", "lat": 50.566705, "lon": -3.506408, "site_height_m": 205, "power_kw": 1.90},
+    {"name": "Tiverton", "tii": "0E0E", "lat": 50.903191, "lon": -3.509706, "site_height_m": 142, "power_kw": 0.5},
+    {"name": "Beer", "tii": "0E11", "lat": 50.701555, "lon": -3.091423, "site_height_m": 93, "power_kw": 0.05},
+    {"name": "Budleigh Salterton", "tii": "0E13", "lat": 50.634317, "lon": -3.354151, "site_height_m": 102, "power_kw": 1.20},
+    {"name": "Beacon Hill North", "tii": "0E07", "lat": 50.447135, "lon": -3.610498, "site_height_m": 196, "power_kw": 21.74}
+  ]
+}

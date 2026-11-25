@@ -1,0 +1,9 @@
+[project]
+name = "towerfix-web"
+version = "0.1.0"
+description = "Browser map for TowerFix: position an RTL-SDR from BBC DAB tower timing"
+requires-python = ">=3.11"
+dependencies = ["numpy"]
+
+[tool.uv]
+package = false
