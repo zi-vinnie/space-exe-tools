@@ -203,6 +203,8 @@ class App:
             self.history[meta["chunk"]] = m
             self.last_measurement, self.last_meta = m, meta
             self.solve_and_send()
+            # The chunk count changed, so the page needs a new status.
+            self.send_status()
 
     def solve_and_send(self):
         # Solve and send under one hold of the lock, so results go out in
